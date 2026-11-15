@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: fct_sales
+    description: Validated transactions with derived month, age group and order-value tier.
+    columns:
+      - name: transaction_id
+        tests: [unique, not_null]
+      - name: age_group
+        tests:
+          - not_null
+          - accepted_values: {values: ['18-24', '25-34', '35-44', '45-54', '55-64', '65+ / under 18']}
+      - name: product_category
+        tests:
+          - accepted_values: {values: ['Beauty', 'Clothing', 'Electronics']}
+      - name: order_value_tier
+        tests:
+          - accepted_values:
+              values: ['1 - Low (<100)', '2 - Medium (100-499)', '3 - High (500-999)', '4 - Premium (1000+)']
+  - name: mart_sales_kpis
+    description: Single-row headline KPIs.
+    columns:
+      - name: total_revenue
+        tests: [not_null]
+  - name: mart_monthly_sales
+    description: Revenue, transactions and month-over-month change per calendar month.
+    columns:
+      - name: transaction_month
+        tests: [unique, not_null]
+  - name: mart_category_performance
+    description: Revenue, units, average transaction value and rankings per product category.
+    columns:
+      - name: product_category
+        tests:
+          - unique
+          - not_null
+          - accepted_values: {values: ['Beauty', 'Clothing', 'Electronics']}
+  - name: mart_age_group_sales
+    columns:
+      - name: age_group
+        tests: [unique, not_null]
+  - name: mart_gender_sales
+    columns:
+      - name: gender
+        tests:
+          - not_null
+          - accepted_values: {values: ['Male', 'Female']}
+  - name: mart_customer_patterns
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+  - name: mart_spend_tiers

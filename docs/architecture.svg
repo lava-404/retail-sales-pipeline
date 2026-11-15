@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="Arial, Helvetica, sans-serif" font-size="13">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#333"/></marker>
+    <marker id="o" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#c2410c"/></marker>
+  </defs>
+  <rect width="960" height="520" fill="#fff"/>
+  <text x="480" y="30" text-anchor="middle" font-size="18" font-weight="bold">Automated Retail Sales Data Pipeline</text>
+
+  <!-- Airflow orchestrator -->
+  <rect x="150" y="60" width="780" height="60" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+  <text x="540" y="84" text-anchor="middle" font-weight="bold" fill="#c2410c">Apache Airflow DAG: retail_sales_pipeline (orchestrates only)</text>
+  <text x="540" y="104" text-anchor="middle" fill="#7c2d12">start → airbyte_ingestion → dbt_run → dbt_test → data_validation → end</text>
+
+  <!-- boxes -->
+  <rect x="20" y="220" width="140" height="80" rx="8" fill="#f1f5f9" stroke="#334155"/>
+  <text x="90" y="252" text-anchor="middle" font-weight="bold">Source</text>
+  <text x="90" y="272" text-anchor="middle">retail_sales_</text>
+  <text x="90" y="288" text-anchor="middle">dataset.csv</text>
+
+  <rect x="205" y="220" width="140" height="80" rx="8" fill="#eff6ff" stroke="#1d4ed8"/>
+  <text x="275" y="252" text-anchor="middle" font-weight="bold">Ingestion</text>
+  <text x="275" y="272" text-anchor="middle">Airbyte</text>
+  <text x="275" y="288" text-anchor="middle">(File → BigQuery)</text>
+
+  <rect x="390" y="190" width="170" height="140" rx="8" fill="#ecfdf5" stroke="#047857"/>
+  <text x="475" y="212" text-anchor="middle" font-weight="bold">Google BigQuery</text>
+  <rect x="402" y="222" width="146" height="28" rx="4" fill="#fff" stroke="#047857"/><text x="475" y="241" text-anchor="middle">retail_raw (raw)</text>
+  <rect x="402" y="256" width="146" height="28" rx="4" fill="#fff" stroke="#047857"/><text x="475" y="275" text-anchor="middle">*_staging (views)</text>
+  <rect x="402" y="290" width="146" height="28" rx="4" fill="#fff" stroke="#047857"/><text x="475" y="309" text-anchor="middle">*_marts (tables)</text>
+
+  <rect x="605" y="220" width="140" height="80" rx="8" fill="#faf5ff" stroke="#7e22ce"/>
+  <text x="675" y="252" text-anchor="middle" font-weight="bold">Transformation</text>
+  <text x="675" y="272" text-anchor="middle">dbt (BigQuery)</text>
+  <text x="675" y="288" text-anchor="middle">models + tests</text>
+
+  <rect x="790" y="220" width="150" height="80" rx="8" fill="#fefce8" stroke="#a16207"/>
+  <text x="865" y="252" text-anchor="middle" font-weight="bold">Consumption</text>
+  <text x="865" y="272" text-anchor="middle">Streamlit chat BI</text>
+  <text x="865" y="288" text-anchor="middle">(read-only SQL)</text>
+
+  <!-- data flow -->
+  <line x1="160" y1="260" x2="203" y2="260" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="345" y1="260" x2="400" y2="236" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="560" y1="270" x2="603" y2="260" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="605" y1="285" x2="562" y2="300" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="745" y1="260" x2="788" y2="260" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M790 285 Q 680 400 548 304" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#a)"/>
+  <text x="690" y="385" font-size="11" fill="#333">queries marts</text>
+
+  <!-- orchestration control (orange) -->
+  <line x1="275" y1="120" x2="275" y2="218" stroke="#c2410c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#o)"/>
+  <line x1="675" y1="120" x2="675" y2="218" stroke="#c2410c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#o)"/>
+  <line x1="475" y1="120" x2="475" y2="188" stroke="#c2410c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#o)"/>
+  <text x="283" y="170" font-size="11" fill="#c2410c">triggers sync</text>
+  <text x="683" y="170" font-size="11" fill="#c2410c">dbt run / test</text>
+  <text x="483" y="160" font-size="11" fill="#c2410c">validation SQL</text>
+
+  <!-- legend -->
+  <line x1="40" y1="450" x2="80" y2="450" stroke="#333" stroke-width="2" marker-end="url(#a)"/><text x="90" y="454">Data flow</text>
+  <line x1="200" y1="450" x2="240" y2="450" stroke="#c2410c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#o)"/><text x="250" y="454">Airflow control (no data passes through Airflow)</text>
+</svg>

@@ -1,0 +1,33 @@
+name: retail_sales
+version: "1.0.0"
+config-version: 2
+profile: retail_sales
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Airbyte's BigQuery destination turns "Transaction ID" into a BigQuery-safe name.
+# If your raw table shows different names, change ONLY this mapping
+# (check with: bq show --schema <project>:retail_raw.retail_sales).
+vars:
+  raw_columns:
+    transaction_id: Transaction_ID
+    date: Date
+    customer_id: Customer_ID
+    gender: Gender
+    age: Age
+    product_category: Product_Category
+    quantity: Quantity
+    price_per_unit: Price_per_Unit
+    total_amount: Total_Amount
+
+models:
+  retail_sales:
+    staging:
+      +materialized: view
+      +schema: staging      # -> <BQ_ANALYTICS_DATASET>_staging
+    marts:
+      +materialized: table
+      +schema: marts        # -> <BQ_ANALYTICS_DATASET>_marts

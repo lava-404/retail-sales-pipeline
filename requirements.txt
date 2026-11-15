@@ -1,0 +1,9 @@
+# Local development (Streamlit app, dbt, tests). Airflow has its own image: see airflow/Dockerfile
+dbt-bigquery>=1.8,<2.0
+streamlit>=1.35
+google-cloud-bigquery>=3.20
+db-dtypes>=1.2
+pandas>=2.0
+altair>=5.0
+pytest>=8.0
+python-dotenv>=1.0

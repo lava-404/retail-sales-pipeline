@@ -1,0 +1,9 @@
+.env
+secrets/*
+!secrets/.gitkeep
+dbt_project/target/
+dbt_project/logs/
+__pycache__/
+*.pyc
+.venv/
+airflow/logs/

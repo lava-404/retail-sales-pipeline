@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_retail_sales
+    description: Typed, snake_case view of the raw transactions with data-quality flags. No rows are dropped.
+    columns:
+      - name: transaction_id
+        tests: [unique, not_null]
+      - name: transaction_date
+        tests: [not_null]
+      - name: customer_id
+        tests: [not_null]
+      - name: gender
+        tests:
+          - accepted_values: {values: ['Male', 'Female']}
+      - name: product_category
+        tests:
+          - accepted_values: {values: ['Beauty', 'Clothing', 'Electronics']}
+      - name: age
+        tests: [not_null]
+      - name: quantity
+        tests: [not_null]
+      - name: price_per_unit
+        tests: [not_null]
+      - name: total_amount
+        tests: [not_null]
+      - name: is_valid_record
+        tests: [not_null]
+  - name: stg_dq_rejected_records
+    description: Quarantine of records failing any validation (empty for the supplied file).
