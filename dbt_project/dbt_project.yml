@@ -13,15 +13,15 @@ clean-targets: ["target", "dbt_packages"]
 # (check with: bq show --schema <project>:retail_raw.retail_sales).
 vars:
   raw_columns:
-    transaction_id: Transaction_ID
-    date: Date
-    customer_id: Customer_ID
-    gender: Gender
-    age: Age
-    product_category: Product_Category
-    quantity: Quantity
-    price_per_unit: Price_per_Unit
-    total_amount: Total_Amount
+    transaction_id: "Transaction ID"
+    date: "Date"
+    customer_id: "Customer ID"
+    gender: "Gender"
+    age: "Age"
+    product_category: "Product Category"
+    quantity: "Quantity"
+    price_per_unit: "Price per Unit"
+    total_amount: "Total Amount"
 
 models:
   retail_sales:

@@ -7,9 +7,11 @@ sources:
     schema: "{{ env_var('BQ_RAW_DATASET', 'retail_raw') }}"
     tables:
       - name: retail_sales
-        identifier: "{{ env_var('RAW_TABLE', 'retail_sales') }}"
+        identifier: retail_sales_csv_staging
         description: One row per transaction (1,000 rows in the supplied file).
         loaded_at_field: _airbyte_extracted_at
         columns:
-          - name: "{{ var('raw_columns')['transaction_id'] }}"
-            tests: [not_null]
+          - name: Transaction ID
+            quote: true
+            tests:
+              - not_null

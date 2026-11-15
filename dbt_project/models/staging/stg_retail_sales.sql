@@ -1,3 +1,4 @@
+
 {#- Staging: snake_case, proper types, and data-quality FLAGS.
     Rows are never dropped here; invalid rows stay visible via is_valid_record
     and are routed to stg_dq_rejected_records instead of being silently discarded. -#}
@@ -21,7 +22,7 @@ typed as (
         safe_cast(cast(`{{ c.quantity }}` as string) as int64)            as quantity,
         safe_cast(cast(`{{ c.price_per_unit }}` as string) as numeric)    as price_per_unit,
         safe_cast(cast(`{{ c.total_amount }}` as string) as numeric)      as total_amount,
-        _airbyte_extracted_at                                             as loaded_at
+        CURRENT_TIMESTAMP()                                               as loaded_at
     from source
 
 ),
