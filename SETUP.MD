@@ -1,37 +1,53 @@
+# Retail Sales Analytics Pipeline — Setup Guide (Windows)
 
-## Setup & Installation (Windows)
+This guide explains how to clone, configure and run the Retail Sales Analytics Pipeline on Windows.
 
-### 1. Clone the Repository
+## 1. Prerequisites
+
+Install:
+
+- Python 3.11
+- Git
+- Docker Desktop
+- Visual Studio Code
+
+Ensure Docker Desktop is running before starting Airflow.
+
+## 2. Clone the Repository
+
+Open PowerShell:
 
 ```powershell
 git clone <YOUR_GITHUB_REPOSITORY_URL>
 cd retail-sales-pipeline
+code .
 ```
 
-### 2. Create and Activate Virtual Environment
+## 3. Create a Python Virtual Environment
 
 ```powershell
 py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
 
-If PowerShell blocks script execution:
-
-```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 3. Install Dependencies
+Upgrade pip:
 
 ```powershell
 python -m pip install --upgrade pip
+```
+
+## 4. Install Dependencies
+
+```powershell
 pip install -r requirements.txt
 ```
 
-### 4. Configure Google Cloud Credentials
+## 5. Configure Google Cloud Credentials
 
-Place the Google Cloud service account JSON key inside:
+Place an authorized Google Cloud service account JSON key inside:
 
 ```text
 secrets/gcp-key.json
@@ -40,14 +56,17 @@ secrets/gcp-key.json
 Set the credentials environment variable:
 
 ```powershell
-$env:GOOGLE_APPLICATION_CREDENTIALS = "C:/Users/lavanyareddy/Downloads/retail-sales-pipeline/secrets/gcp-key.json"
+$env:GOOGLE_APPLICATION_CREDENTIALS = "C:/Users/<USERNAME>/Downloads/retail-sales-pipeline/secrets/gcp-key.json"
 ```
 
-### 5. Configure Environment Variables
+Replace `<USERNAME>` with the Windows username.
+
+## 6. Configure Environment Variables
 
 Create a `.env` file in the project root:
 
 ```dotenv
+# Google Cloud / BigQuery
 GCP_PROJECT_ID=ambient-climate-514813-d4
 BQ_LOCATION=US
 
@@ -57,12 +76,18 @@ RAW_TABLE=retail_sales_csv_staging
 BQ_ANALYTICS_DATASET=retail_analytics
 BQ_MARTS_DATASET=retail_analytics_marts
 
-GOOGLE_APPLICATION_CREDENTIALS=C:/Users/lavanyareddy/Downloads/retail-sales-pipeline/secrets/gcp-key.json
+GOOGLE_APPLICATION_CREDENTIALS=C:/Users/<USERNAME>/Downloads/retail-sales-pipeline/secrets/gcp-key.json
 
+# Validation
 EXPECTED_ROW_COUNT=1000
+
+# Airflow
+AIRFLOW_UID=50000
+_AIRFLOW_WWW_USER_USERNAME=admin
+_AIRFLOW_WWW_USER_PASSWORD=change-me
 ```
 
-### 6. Configure dbt Profile
+## 7. Configure dbt Profile
 
 Create the dbt configuration directory:
 
@@ -70,7 +95,9 @@ Create the dbt configuration directory:
 New-Item -ItemType Directory -Force "$HOME\.dbt"
 ```
 
-Create `profiles.yml` inside `$HOME\.dbt` with the following configuration:
+Create the following file:
+
+`C:\Users\<USERNAME>\.dbt\profiles.yml`
 
 ```yaml
 retail_sales:
@@ -82,48 +109,20 @@ retail_sales:
       project: ambient-climate-514813-d4
       dataset: retail_analytics
       location: US
-      keyfile: "C:/Users/lavanyareddy/Downloads/retail-sales-pipeline/secrets/gcp-key.json"
+      keyfile: "C:/Users/<USERNAME>/Downloads/retail-sales-pipeline/secrets/gcp-key.json"
       threads: 4
       timeout_seconds: 300
       priority: interactive
 ```
 
-### 7. Verify BigQuery Connection
+Replace `<USERNAME>` with the Windows username.
+
+## 8. Verify BigQuery Connectivity
+
+From the project root:
 
 ```powershell
 python -c "from google.cloud import bigquery; c=bigquery.Client(project='ambient-climate-514813-d4'); print([(t.table_id) for t in c.list_tables('ambient-climate-514813-d4.retail_raw')])"
 ```
 
-### 8. Run dbt Transformations
-
-```powershell
-cd dbt_project
-
-dbt debug --profiles-dir "$HOME/.dbt"
-
-dbt run --profiles-dir "$HOME/.dbt"
-
-dbt test --profiles-dir "$HOME/.dbt"
-
-cd ..
-```
-
-### 9. Launch Streamlit Dashboard
-
-```powershell
-streamlit run streamlit_app/app.py
-```
-
-Open the dashboard:
-
-```text
-http://localhost:8501
-```
-
-### 10. Stop the Application
-
-Press:
-
-```text
-Ctrl + C
-```
+## 
